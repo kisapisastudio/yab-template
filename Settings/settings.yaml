@@ -1,0 +1,49 @@
+reactions:
+    std:
+        ru:
+            - Стандартыне ответы
+            - На не предусмотренные сообщения полльзователей
+        en:
+            - Standard answers
+            - For messages not provided by users
+    angry:
+        ru:
+            - Другой набор ответов
+            - Например - раздражённый
+            - Или - злой
+        en:
+            - Another set of answers
+            - For example - annoyed
+            - Or - angry
+
+tech_messages:
+    save_menu_text: 
+        ru: | 
+            Это многострочное сообщение пользователю, который хочет открыть меню сохранения
+            Давай повторим?
+            🔀 - дни где твой выбор имел решающее значение
+            (Осторожно прыжок во времени невозможно отменить, прыгнуть обратно уже не выйдет):
+        en: |
+            This is a multi-line message to the user who wants to open the save menu
+            Let's repeat?
+            🔀 - days where your choice was crucial
+            (Caution time jump cannot be undone, jumping back will not work):
+    cancel_menu_text: 
+        ru: Продолжаем!
+        en: Continue!
+    restart_text:
+        ru: Вы уверены, что хотите начать заново?
+        en: Are you sure you want to start over?
+    restart_button_text:
+        ru: Начать заново
+        en: Start over
+    cancel_button_text:
+        ru: Отмена
+        en: Cancel
+
+default_settings:
+    wait: 1
+    time_for_status: 1
+    reaction: std
+    languages:
+        ru: Русский

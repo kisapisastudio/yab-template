@@ -1,0 +1,11 @@
+title: Tools
+checkpoint_name: Инструменты для работы
+---
+[video vscode_nav.mp4 /]Как работает навигация по вашей истории и исправление ошибок #line:6e135b2e-38e5-4050-a057-cd3d227dc45f
+-> дальше #line:f377f9ca-2a3d-4726-88bf-b4dbd1f76260
+[video vscode_actions.mp4 /]Push на github, github actions и pull результата #line:22847519-5a8d-4809-b495-b2a4b7112389
+-> дальше #line:78bbf0b9-372b-4fbf-9013-c9316a889f03
+[video bot_test.mp4 /]Как тестировать истории целиком и частями #line:3b56e622-19c5-486f-8a19-a9c896d95363
+-> дальше #line:313c7c94-7027-4099-8ab2-5e1f29f5f746
+[video pr.mp4 /]Запрос на добавление в продакшн #line:11a09abf-636e-40a9-ab72-f2d875e3e93d
+===

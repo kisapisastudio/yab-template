@@ -1,0 +1,4 @@
+ident,ru,en
+a546ff8d-6ac6-4410-855f-55145aa16b2d,Ссылка для подписки  ,
+8dc01e62-ba0f-4612-bed6-04ab8e3f59c5,Ваш уровень подписки[cl/] {$__subscription_level_in_text_Menu}[br/]Кол-во рефералов: {$_REFERALS_}[br/]А переменная из потока: {$__test_local_var_Menu_template} ,
+b148f3cd-1afb-4a67-b6fb-925f94491264,Вернуться к игре ,

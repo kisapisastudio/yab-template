@@ -1,0 +1,36 @@
+title: Start
+is_entry_point: true
+---
+// Engine vars don't touch
+<<declare $_SUB_LEVEL_ = 0>>
+<<declare $_REF_URL_ = "">>
+<<declare $_REFERALS_ = 0>>
+<<declare $_BOOSTY_URL_ = "">>
+<<declare $_PATREON_URL_ = "">>
+
+// Game vars
+<<declare $test_flag = false>>
+<<declare $test_counter = 0>>
+
+// Start node
+<<jump Git_hub>>
+===
+title: Menu
+start_on_command: menu
+---
+<<declare $__subscription_level_in_text_Menu = "">>
+
+<<if $_SUB_LEVEL_ == 0>>
+        <<set $__subscription_level_in_text_Menu = "Вы не подписаны">>
+<<elseif $_SUB_LEVEL_ == 1>>
+    <<set $__subscription_level_in_text_Menu = "Kiss me">>
+<<elseif $_SUB_LEVEL_ == 2>>
+    <<set $__subscription_level_in_text_Menu = "Touch me">>
+<<endif>>
+
+Ваш уровень подписки[cl/] {$__subscription_level_in_text_Menu}[br/]Кол-во рефералов: {$_REFERALS_}[br/]А переменная из потока: {$__test_local_var_Menu_template} #line:8dc01e62-ba0f-4612-bed6-04ab8e3f59c5
+->Ссылка для подписки  #line:3b7b877d-52e1-4c38-9180-cd6070d74d54
+    [link $_BOOSTY_URL_]Boosty[/link][br/][link $_PATREON_URL_]Patreon[/link] #line:a546ff8d-6ac6-4410-855f-55145aa16b2d
+->Вернуться к игре #line:b148f3cd-1afb-4a67-b6fb-925f94491264
+<<back_to_flow>>
+===
