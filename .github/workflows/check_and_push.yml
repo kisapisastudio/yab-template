@@ -35,6 +35,12 @@ jobs:
           uses: actions/setup-python@v3
           with:
             python-version: '3.x'
+        
+        - name: Setup git
+          if: env.YAB_CHANGED == 'true' || env.MEDIA_CHANGED == 'true'
+          run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
 
         - name: Install Image Handling Library
           if: env.MEDIA_CHANGED == 'true'
@@ -52,7 +58,7 @@ jobs:
                 file, ext = os.path.splitext(infile)
                 with Image.open(infile) as img:
                     if img.width > 1280 or img.height > 1280:
-                        img.thumbnail((1280, 1280), Image.ANTIALIAS)
+                        img.thumbnail((1280, 1280), Image.Resampling.LANCZOS)
                         img.save(infile, "JPEG")
             EOF
 
@@ -66,14 +72,14 @@ jobs:
 
       
         - name: Install yab_parser
-          if: env.YAB_CHANGED == 'true'
+          if: env.YAB_CHANGED == 'true' || env.MEDIA_CHANGED == 'true'
           run: |
             python -m pip install --upgrade pip
             pip install git+https://github.com/kisapisastudio/yab_parser.git@main
 
     
         - name: Run script
-          if: env.YAB_CHANGED == 'true'
+          if: env.YAB_CHANGED == 'true' || env.MEDIA_CHANGED == 'true'
           run: |
             python -m yab_parser > log.txt
             if grep -q "ERROR" log.txt; then
@@ -83,10 +89,8 @@ jobs:
             fi
 
         - name: Commit Results
-          if: env.YAB_CHANGED == 'true'
+          if: env.YAB_CHANGED == 'true' || env.MEDIA_CHANGED == 'true'
           run: |
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
             if [ "$status" = "error" ]; then
               git add log.txt
               git commit -m "Error in parsing"
