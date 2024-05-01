@@ -1,0 +1,78 @@
+{
+  "Commands": [
+    {
+      "YarnName": "typing",
+      "DefinitionName": "RunTypingAnimation",
+      "Documentation": "Run typing animation.",
+      "Signature": "typing(howLong: number)",
+      "Parameters": [
+        {
+          "Name": "howLong",
+          "Type": "number",
+          "Documentation": "How long the typing animation should last in seconds."
+        }
+      ]
+    },
+    {
+      "YarnName": "upload_photo",
+      "DefinitionName": "RunUploadPhotoAnimation",
+      "Documentation": "Run uploading photo animation.",
+      "Signature": "upload_photo(howLong: number)",
+      "Parameters": [
+        {
+          "Name": "howLong",
+          "Type": "number",
+          "Documentation": "How long the uploading animation should last in seconds."
+        }
+      ]
+    },
+    {
+      "YarnName": "record_voice",
+      "DefinitionName": "RunRecordVoiceAnimation",
+      "Documentation": "Run record voice animation.",
+      "Signature": "record_voice(howLong: number)",
+      "Parameters": [
+        {
+          "Name": "howLong",
+          "Type": "number",
+          "Documentation": "How long the recording animation should last in seconds."
+        }
+      ]
+    },
+    {
+      "YarnName": "record_video_note",
+      "DefinitionName": "RunRecordVideoNoteAnimation",
+      "Documentation": "Run record video note animation.",
+      "Signature": "record_video_note(howLong: number)",
+      "Parameters": [
+        {
+          "Name": "howLong",
+          "Type": "number",
+          "Documentation": "How long the recording animation should last in seconds."
+        }
+      ]
+    },
+    {
+      "YarnName": "reaction",
+      "DefinitionName": "SetReaction",
+      "Documentation": "Set reaction for next message.",
+      "Signature": "reaction(reactionName: string)",
+      "Parameters": [
+        {
+          "Name": "reactionName",
+          "Type": "string",
+          "Documentation": "Name of the reaction to set for next message."
+        }
+      ]
+    },
+    {
+      "YarnName": "back_to_flow",
+      "DefinitionName": "JumpToFlow",
+      "Documentation": "Back user to last point in the flow.",
+      "Signature": "back_to_flow()",
+      "Parameters": [
+      ]
+    }
+  ],
+  "Functions": []
+}
