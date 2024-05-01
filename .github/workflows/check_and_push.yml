@@ -1,0 +1,100 @@
+name: Check and make build
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+    process-and-commit:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            fetch-depth: '2'
+        
+        - name: Check for Changed Media Files
+          id: files
+          run: |
+            if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q 'Media/'; then
+              echo "MEDIA_CHANGED=true" >> $GITHUB_ENV
+            else
+              echo "MEDIA_CHANGED=false" >> $GITHUB_ENV
+            fi
+            if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q -E '^(Story|Translation|Settings)/'; then
+              echo "YAB_CHANGED=true" >> $GITHUB_ENV
+            else
+              echo "YAB_CHANGED=false" >> $GITHUB_ENV
+            fi
+
+        - name: Set up Python
+          if: env.YAB_CHANGED == 'true' || env.MEDIA_CHANGED == 'true'
+          uses: actions/setup-python@v3
+          with:
+            python-version: '3.x'
+
+        - name: Install Image Handling Library
+          if: env.MEDIA_CHANGED == 'true'
+          run: pip install Pillow
+      
+        - name: Resize Images
+          if: env.MEDIA_CHANGED == 'true'
+          run: |
+            python - <<EOF
+            from PIL import Image
+            import os
+            import glob
+            os.chdir('Media')
+            for infile in glob.glob("*.jpg") + glob.glob("*.jpeg"):
+                file, ext = os.path.splitext(infile)
+                with Image.open(infile) as img:
+                    if img.width > 1280 or img.height > 1280:
+                        img.thumbnail((1280, 1280), Image.ANTIALIAS)
+                        img.save(infile, "JPEG")
+            EOF
+
+    
+        - name: Add media changes
+          if: env.MEDIA_CHANGED == 'true'
+          run: |
+            git add Media/*
+            git commit -m "Resize images"
+            git push origin ${{ github.ref_name }}
+
+      
+        - name: Install yab_parser
+          if: env.YAB_CHANGED == 'true'
+          run: |
+            python -m pip install --upgrade pip
+            pip install git+https://github.com/kisapisastudio/yab_parser.git@main
+
+    
+        - name: Run script
+          if: env.YAB_CHANGED == 'true'
+          run: |
+            python -m yab_parser > log.txt
+            if grep -q "ERROR" log.txt; then
+                echo "status=error" >> $GITHUB_ENV
+            else
+                echo "status=success" >> $GITHUB_ENV
+            fi
+
+        - name: Commit Results
+          if: env.YAB_CHANGED == 'true'
+          run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            if [ "$status" = "error" ]; then
+              git add log.txt
+              git commit -m "Error in parsing"
+            else
+              git add *
+              git commit -m "YAB parsing successful"
+              git tag yab_v1-build_v${{ github.run_number }}-${{ github.ref_name }}
+              git push origin yab_v1-build_v${{ github.run_number }}-${{ github.ref_name }}
+              curl "https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-dd417491-31ec-428b-bd18-ebff143ea75b/default/github?user=${{ github.repository_owner }}&repo=$(echo ${{ github.repository }} | cut -d'/' -f2)"
+            fi
+            git push origin ${{ github.ref_name }}
