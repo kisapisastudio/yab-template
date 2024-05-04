@@ -54,12 +54,13 @@ jobs:
             import os
             import glob
             os.chdir('Media')
-            for infile in glob.glob("*.jpg") + glob.glob("*.jpeg"):
-                file, ext = os.path.splitext(infile)
-                with Image.open(infile) as img:
-                    if img.width > 1280 or img.height > 1280:
-                        img.thumbnail((1280, 1280), Image.Resampling.LANCZOS)
-                        img.save(infile, "JPEG")
+            if [f for f in os.listdir() if f.endswith('.jpg') or f.endswith('.jpeg')] != []:
+              for infile in glob.glob("*.jpg") + glob.glob("*.jpeg"):
+                  file, ext = os.path.splitext(infile)
+                  with Image.open(infile) as img:
+                      if img.width > 1280 or img.height > 1280:
+                          img.thumbnail((1280, 1280), Image.Resampling.LANCZOS)
+                          img.save(infile, "JPEG")
             EOF
 
     
@@ -67,8 +68,12 @@ jobs:
           if: env.MEDIA_CHANGED == 'true'
           run: |
             git add Media/*
-            git commit -m "Resize images"
-            git push origin ${{ github.ref_name }}
+            COMMIT_NEEDED=0
+            git diff --staged --quiet || COMMIT_NEEDED=1
+            if [ "$COMMIT_NEEDED" -eq 1 ]; then
+              git commit -m "Resize images"
+              git push origin ${{ github.ref_name }}
+            fi
 
       
         - name: Install yab_parser
